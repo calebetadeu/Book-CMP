@@ -105,8 +105,10 @@ fun BookListItem(
                     null -> CircularProgressIndicator()
                     else -> {
                         Image(
-                            painter = if (result.isSuccess) painter else {
-                                painterResource(Res.drawable.book_error_2)
+                            painter = if (result.isSuccess)
+                                painter
+                            else {
+                                 painterResource(Res.drawable.book_error_2)
                             },
                             contentDescription = book.title,
                             contentScale = if (result.isSuccess) {

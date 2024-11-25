@@ -7,9 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.plcoding.book.presentation.book_list.BookListScreen
-import com.plcoding.book.presentation.book_list.BookListState
-import com.plcoding.book.presentation.book_list.books
 import com.plcoding.book.presentation.book_list.components.BookSearchBar
 
 @Preview
@@ -35,13 +32,3 @@ private fun BookSearchBarPreview() {
 }
 
 
-@Preview
-@Composable
-private fun BookListScreenPreview() {
-    BookListScreen(
-        state = BookListState(
-            searchResults = books
-        ),
-        onAction = { },
-    )
-}
