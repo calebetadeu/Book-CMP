@@ -1,4 +1,4 @@
-package com.plcoding.book.domain
+package com.plcoding.bookpedia.book.domain
 
 import com.plcoding.bookpedia.core.domain.DataError
 import com.plcoding.bookpedia.core.domain.Result
