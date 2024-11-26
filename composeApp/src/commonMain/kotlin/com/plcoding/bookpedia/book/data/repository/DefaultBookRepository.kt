@@ -1,9 +1,9 @@
-package com.plcoding.book.data.repository
+package com.plcoding.bookpedia.book.data.repository
 
-import com.plcoding.book.data.mappers.toBook
-import com.plcoding.book.data.network.RemoteBookDataSource
-import com.plcoding.book.domain.Book
-import com.plcoding.book.domain.BookRepository
+import com.plcoding.bookpedia.book.data.mappers.toBook
+import com.plcoding.bookpedia.book.data.network.RemoteBookDataSource
+import com.plcoding.bookpedia.book.domain.Book
+import com.plcoding.bookpedia.book.domain.BookRepository
 import com.plcoding.bookpedia.core.domain.DataError
 import com.plcoding.bookpedia.core.domain.Result
 import com.plcoding.bookpedia.core.domain.map

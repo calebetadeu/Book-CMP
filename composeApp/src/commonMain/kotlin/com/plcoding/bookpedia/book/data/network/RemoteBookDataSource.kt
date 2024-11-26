@@ -1,6 +1,6 @@
-package com.plcoding.book.data.network
+package com.plcoding.bookpedia.book.data.network
 
-import com.plcoding.book.data.dto.SearchResponseDto
+import com.plcoding.bookpedia.book.data.dto.SearchResponseDto
 import com.plcoding.bookpedia.core.domain.DataError
 import com.plcoding.bookpedia.core.domain.Result
 

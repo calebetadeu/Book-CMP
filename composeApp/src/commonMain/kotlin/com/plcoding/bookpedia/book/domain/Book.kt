@@ -1,4 +1,4 @@
-package com.plcoding.book.domain
+package com.plcoding.bookpedia.book.domain
 
 data class Book(
     val id: String,

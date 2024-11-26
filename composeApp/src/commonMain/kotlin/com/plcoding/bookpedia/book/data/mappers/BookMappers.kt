@@ -1,7 +1,7 @@
-package com.plcoding.book.data.mappers
+package com.plcoding.bookpedia.book.data.mappers
 
-import com.plcoding.book.data.dto.SearchedBookDto
-import com.plcoding.book.domain.Book
+import com.plcoding.bookpedia.book.data.dto.SearchedBookDto
+import com.plcoding.bookpedia.book.domain.Book
 
 fun SearchedBookDto.toBook(): Book {
     return Book(

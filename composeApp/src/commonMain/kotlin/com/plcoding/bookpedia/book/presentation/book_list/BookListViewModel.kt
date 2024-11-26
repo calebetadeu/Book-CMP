@@ -1,9 +1,9 @@
-package com.plcoding.book.presentation.book_list
+package com.plcoding.bookpedia.book.presentation.book_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.book.domain.Book
-import com.plcoding.book.domain.BookRepository
+import com.plcoding.bookpedia.book.domain.Book
+import com.plcoding.bookpedia.book.domain.BookRepository
 import com.plcoding.bookpedia.core.domain.onError
 import com.plcoding.bookpedia.core.domain.onSuccess
 import com.plcoding.bookpedia.core.presentation.toUiText
@@ -25,35 +25,57 @@ import kotlinx.coroutines.launch
 class BookListViewModel(
     private val bookRepository: BookRepository
 ) : ViewModel() {
+
+
+    private var cachedBooks = emptyList<Book>()
+    private var searchJob: Job? = null
+    private var observeFavoriteJob: Job? = null
+
     private val _state = MutableStateFlow(BookListState())
     val state = _state
         .onStart {
-            if (cachedBook.isEmpty()) {
+            if(cachedBooks.isEmpty()) {
                 observeSearchQuery()
             }
-        }.stateIn(
+        //    observeFavoriteBooks()
+        }
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             _state.value
         )
-    private var searchJob: Job? = null
-    private var cachedBook = emptyList<Book>()
 
     fun onAction(action: BookListAction) {
         when (action) {
             is BookListAction.OnBookClick -> {
+
             }
 
             is BookListAction.OnSearchQueryChange -> {
-                _state.value = _state.value.copy(searchQuery = action.query)
+                _state.update {
+                    it.copy(searchQuery = action.query)
+                }
             }
 
             is BookListAction.OnTabSelected -> {
-                _state.value = _state.value.copy(selectedTabIndex = action.index)
-
+                _state.update {
+                    it.copy(selectedTabIndex = action.index)
+                }
             }
         }
     }
+
+//    private fun observeFavoriteBooks() {
+//        observeFavoriteJob?.cancel()
+//        observeFavoriteJob = bookRepository
+//            .getFavoriteBooks()
+//            .onEach { favoriteBooks ->
+//                _state.update { it.copy(
+//                    favoriteBooks = favoriteBooks
+//                ) }
+//            }
+//            .launchIn(viewModelScope)
+//    }
 
     private fun observeSearchQuery() {
         state
@@ -63,11 +85,12 @@ class BookListViewModel(
             .onEach { query ->
                 when {
                     query.isBlank() -> {
-                        _state.value = _state.value.copy(
-                            errorMessage = null,
-                            searchResults = cachedBook
-                        )
-
+                        _state.update {
+                            it.copy(
+                                errorMessage = null,
+                                searchResults = cachedBooks
+                            )
+                        }
                     }
 
                     query.length >= 2 -> {
@@ -75,29 +98,28 @@ class BookListViewModel(
                         searchJob = searchBooks(query)
                     }
                 }
-
-            }.launchIn(viewModelScope)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun searchBooks(query: String) = viewModelScope.launch {
-
         _state.update {
             it.copy(
-                isLoading = true,
+                isLoading = true
             )
         }
-
         bookRepository
             .searchBooks(query)
             .onSuccess { searchResults ->
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        searchResults = searchResults,
-                        errorMessage = null
+                        errorMessage = null,
+                        searchResults = searchResults
                     )
                 }
-            }.onError { error ->
+            }
+            .onError { error ->
                 _state.update {
                     it.copy(
                         searchResults = emptyList(),
@@ -105,7 +127,7 @@ class BookListViewModel(
                         errorMessage = error.toUiText()
                     )
                 }
-
             }
     }
+
 }
